@@ -24,10 +24,11 @@ export async function getACarModel(req, res) {
 
 // Add a Model of a Make Car
 export async function insertCarMakeModel(req, res) {
+   const {name, description, makeId} = req.body;
    const newModel = new Model({
-       name: req.body.name,
-       description: req.body.description,
-       makeId: req.body.makeId,
+       name,
+       description,
+       makeId,
    });
 
   try {
@@ -41,11 +42,13 @@ export async function insertCarMakeModel(req, res) {
 // Update a Model of a Make Car
 export async function updateCarMake(req, res) {
    const filter = { _id: req.params.modelId };
+   const {name, description} = req.body;
+
    // create a document that sets the data for make
    const updateDoc = {
        $set: {
-           name: req.body.name,
-           description: req.body.description,
+           name,
+           description,
          },
      };
 

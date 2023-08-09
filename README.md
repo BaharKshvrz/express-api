@@ -1,5 +1,4 @@
-    
+# Build a REST API with Node.js, Mongoose
+
 # Measure your ExpressJS API Performance with Prometheus 
-monitoring:
-"prom-client": "^14.2.0",
-"response-time": "^2.3.2"
+- http://localhost:9100/metrics
