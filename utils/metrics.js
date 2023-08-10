@@ -27,6 +27,6 @@ export function startMetricsServer() {
   });
 
   app.listen(9100, () => {
-    log.info("Metrics server started at http://localhost:9100");
+      log.info("Metrics server started at http://localhost:9100/metrics");
   });
 }

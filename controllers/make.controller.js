@@ -5,7 +5,10 @@ import {
       updateMake,
       deleteMake,
    } from "../services/make.service.js";
-import { transformMake, transformMakes } from "../transformation/makeTransformation.js";
+import { 
+     transformMake,
+     transformMakes 
+   } from "../transformation/makeTransformation.js";
 import { organizeAPIResult } from "../utils/helper.js";
 
 // Get All Makes of Car
@@ -22,7 +25,7 @@ export async function getMakesHandler(req, res) {
 export async function getMakeHandler(req, res) {
    try {
       const make = await getMake(req.params.makeId);
-      return res.json(organizeAPIResult(transformMake(make), "Item was retrieved successfully."))
+      return res.json(organizeAPIResult(transformMake(make), "Item retrieved successfully."))
    } catch (error) {
       return res.json({message: error})
    }
@@ -33,7 +36,7 @@ export async function insertCarMakeHandler(req, res) {
   const {name, description} = req.body;
   try {
      const saveMake= await createMake({name, description});
-     return res.status(201).json(saveMake)
+     return res.status(201).json(organizeAPIResult(transformMake(saveMake), "Item created successfully."))
   } catch (error) {
       return res.json({message: error})
   }
@@ -50,10 +53,9 @@ export async function updateCarMakeHandler(req, res) {
            description,
          },
      };
-
    try {
        const updatedMake = await updateMake(filter, updateDoc);
-       res.json(updatedMake)
+       return res.json(organizeAPIResult(transformMake(updatedMake, "Item updated successfully.")))
     } catch (error) {
         res.json({message: error})
     }
@@ -63,7 +65,7 @@ export async function updateCarMakeHandler(req, res) {
 export async function deleteCarMakeHandler(req, res) {
    try {
        const removedMake = await deleteMake({_id: req.params.makeId});
-       res.json(removedMake)
+       return res.json(organizeAPIResult(transformMake(removedMake), "Item deleted successfully."))
     } catch (error) {
         res.json({message: error})
     }

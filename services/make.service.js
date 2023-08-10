@@ -33,7 +33,7 @@ async function createMake(input) {
 // Update a Make
 async function updateMake(filter, updateDoc) {
     try {
-      const result = await Make.updateOne(filter, updateDoc);
+      const result = await Make.findOneAndUpdate(filter, updateDoc);
       return result;
     } catch (error) {
         throw e;
@@ -43,13 +43,12 @@ async function updateMake(filter, updateDoc) {
 // Delete a Make
 async function deleteMake(query) {
     try {
-      const result = await Make.deleteOne(query);
+      const result = await Make.findOneAndDelete(query);
       return result;
     } catch (error) {
         throw e;
     }
  }  
-
 
  export {
     getAllMakes,

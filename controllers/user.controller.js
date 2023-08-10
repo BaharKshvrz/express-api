@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { databaseResponseTimeHistogram } from "../utils/metrics.js";
 import { createUser } from "../services/user.service.js";
+import { transformUser } from "../transformation/userTransformation.js";
 
 // Add a User
 async function userSignupHandler(req, res) {
@@ -16,7 +17,7 @@ async function userSignupHandler(req, res) {
         return res.status(201).json({
             success: true,
             message: "Signup was successful!",
-            data: newUser
+            data: transformUser(newUser)
         });
     } catch (error) {
         timer({ ...metricsLabels, success: "false" });

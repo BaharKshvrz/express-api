@@ -32,11 +32,8 @@ export async function createModel(input) {
 
 // Update a Model
 export async function updateModel(filter, updateDoc) {
-  console.log(filter);
-  console.log(updateDoc);
-
     try {
-      const result = await Model.updateOne(filter, updateDoc);
+      const result = await Model.findOneAndUpdate(filter, updateDoc);
       return result;
     } catch (error) {
         throw e;
@@ -46,7 +43,7 @@ export async function updateModel(filter, updateDoc) {
 // Delete a Model
 export async function deleteModelRecord(query) {
     try {
-      const result = await Model.deleteOne(query);
+      const result = await Model.findOneAndDelete(query);
       return result;
     } catch (error) {
         throw e;

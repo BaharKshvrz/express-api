@@ -7,11 +7,17 @@ import {
          updateModel 
    } from "../services/model.service.js";
 
+import { 
+     transformModel,
+     transformModels
+   } from "../transformation/modelTransformation.js";
+import { organizeAPIResult } from "../utils/helper.js";
+
 // Get All Models of a Make Car
 async function getAllCarModelsByIdHandler(req, res) {
    try {
      const models = await getAllCarModelsByMakeId({"makeId": new mongoose.Types.ObjectId(req.params.makeId)})
-     return res.json(models)
+     return res.json(organizeAPIResult(transformModels(models), "List of items retrieved successfully."))
    } catch (error) {
       return res.json({message: error})
    }
@@ -21,7 +27,8 @@ async function getAllCarModelsByIdHandler(req, res) {
 async function getCarModelHandlerByIdHandler(req, res) {
    try {
       const model = await getModel(req.params.id);
-      return res.json(model)
+      return res.json(organizeAPIResult(transformModel(model), "Item retrieved successfully."))
+
    } catch (error) {
       return res.json({message: error})
    }
@@ -30,10 +37,9 @@ async function getCarModelHandlerByIdHandler(req, res) {
 // Add a Model of a Make Car
 async function insertCarModelHandler(req, res) {
    const {name, description, makeId} = req.body;
-   
    try {
-        const saveMake= await createModel({name, description, makeId});
-        return res.status(201).json(saveMake)
+        const saveModel= await createModel({name, description, makeId});
+        return res.status(201).json(organizeAPIResult(transformModel(saveModel), "Item created successfully."))
     } catch (error) {
         res.json({message: error})
     }
@@ -53,7 +59,7 @@ async function updateCarModelHandler(req, res) {
 
    try {
        const updatedModel = await updateModel(filter, updateDoc);
-       return res.json(updatedModel)
+       return res.json(organizeAPIResult(transformModel(updatedModel, "Item updated successfully.")))
     } catch (error) {
        return res.json({message: error})
     }
@@ -63,7 +69,7 @@ async function updateCarModelHandler(req, res) {
 async function deleteCarModelHandler(req, res) {
    try {
        const removedModel = await deleteModelRecord({_id: req.params.modelId});
-       return res.json(removedModel)
+       return res.json(organizeAPIResult(transformModel(removedModel), "Item deleted successfully."))
     } catch (error) {
         return res.json({message: error})
     }
