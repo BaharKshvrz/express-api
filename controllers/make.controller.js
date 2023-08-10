@@ -1,10 +1,18 @@
-import { getAllMakes, createMake, getMake, updateMake, deleteMake} from "../services/make.service.js";
+import { 
+      getAllMakes,
+      createMake, 
+      getMake,
+      updateMake,
+      deleteMake,
+   } from "../services/make.service.js";
+import { transformMake, transformMakes } from "../transformation/makeTransformation.js";
+import { organizeAPIResult } from "../utils/helper.js";
 
 // Get All Makes of Car
 export async function getMakesHandler(req, res) {
    try {
       const makes = await getAllMakes();
-      return res.json(makes)
+      return res.json(organizeAPIResult(transformMakes(makes), "List of items retrieved successfully."))
    } catch (error) {
       return res.json({message: error})
    }
@@ -14,7 +22,7 @@ export async function getMakesHandler(req, res) {
 export async function getMakeHandler(req, res) {
    try {
       const make = await getMake(req.params.makeId);
-      return res.json(make)
+      return res.json(organizeAPIResult(transformMake(make), "Item was retrieved successfully."))
    } catch (error) {
       return res.json({message: error})
    }
@@ -23,7 +31,6 @@ export async function getMakeHandler(req, res) {
 // Add a Make of Car
 export async function insertCarMakeHandler(req, res) {
   const {name, description} = req.body;
-
   try {
      const saveMake= await createMake({name, description});
      return res.status(201).json(saveMake)

@@ -1,4 +1,4 @@
-import User from "../models/user.schema.js"
+import User from "../schema/user.schema.js"
 
 // Insert a User
 export async function createUser(input) {

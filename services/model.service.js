@@ -1,4 +1,4 @@
-import Model from "../models/model.schema.js"
+import Model from "../schema/model.schema.js"
 
 // Get All Models
 export async function getAllCarModelsByMakeId(query) {

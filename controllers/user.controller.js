@@ -3,7 +3,7 @@ import { databaseResponseTimeHistogram } from "../utils/metrics.js";
 import { createUser } from "../services/user.service.js";
 
 // Add a User
-export async function userSignupHandler(req, res) {
+async function userSignupHandler(req, res) {
    const { firstName, lastName, email, username, password } = req.body;
 
    const timer = databaseResponseTimeHistogram.startTimer();
@@ -27,7 +27,7 @@ export async function userSignupHandler(req, res) {
     }
 }
 
-export async function userLoginHandler(req, res) {
+async function userLoginHandler(req, res) {
    // Authentication User 
    
    // Make a jwt token
@@ -37,3 +37,8 @@ export async function userLoginHandler(req, res) {
    
    return res.json({ accessToken: accessToken});
   }
+
+export {
+    userSignupHandler,
+    userLoginHandler,
+}  

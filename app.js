@@ -7,6 +7,7 @@ import logger from "./utils/logger.js";
 import routes from "./routers/v1/index.js";
 import { restResponseTimeHistogram, startMetricsServer } from "./utils/metrics.js";
 import responseTime from "response-time";
+import { checkCache, saveToCache } from "./middleware/cache.js";
 
 dotenv.config({ path: `config/.env.${process.env.NODE_ENV}`});
 const app = express();
@@ -31,13 +32,17 @@ app.use(
 );
 
 
-// Import Routes
-// app.use("/posts", postsRoute)
-// app.use("/users", usersRoute)
-
 app.listen(PORT, async () => {
     logger.info(`App is running at http://localhost:${PORT}`);
     await connect("cars");
     routes(app);
+
+  //   const data = { message: 'This is your data.' };
+
+  //   // Save data to Redis cache
+  //   saveToCache("test", data);
+  //  // checkCache("test");
+
+
     startMetricsServer();
   });

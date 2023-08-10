@@ -1,7 +1,7 @@
-import Make from "../models/make.schema.js"
+import Make from "../schema/make.schema.js"
 
 // Get All Makes
-export async function getAllMakes() {
+async function getAllMakes() {
     try {
       const result = await Make.find()
       return result;
@@ -11,7 +11,7 @@ export async function getAllMakes() {
  }
  
 // Get a Make
-export async function getMake(id) {
+async function getMake(id) {
     try {
       const result = await Make.findById(id)
       return result;
@@ -21,7 +21,7 @@ export async function getMake(id) {
  }
  
 // Insert a Make
-export async function createMake(input) {
+async function createMake(input) {
     try {
       const result = await Make.create(input)
       return result;
@@ -31,7 +31,7 @@ export async function createMake(input) {
  }
 
 // Update a Make
-export async function updateMake(filter, updateDoc) {
+async function updateMake(filter, updateDoc) {
     try {
       const result = await Make.updateOne(filter, updateDoc);
       return result;
@@ -41,7 +41,7 @@ export async function updateMake(filter, updateDoc) {
  }
 
 // Delete a Make
-export async function deleteMake(query) {
+async function deleteMake(query) {
     try {
       const result = await Make.deleteOne(query);
       return result;
@@ -49,3 +49,12 @@ export async function deleteMake(query) {
         throw e;
     }
  }  
+
+
+ export {
+    getAllMakes,
+    getMake,
+    createMake,
+    updateMake,
+    deleteMake
+ }

@@ -1,9 +1,14 @@
-import Make from "../models/make.schema.js";
-import mongoose, { deleteModel } from "mongoose"
-import { createModel, deleteModelRecord, getAllCarModelsByMakeId, getModel, updateModel } from "../services/model.service.js";
+import mongoose from "mongoose"
+import { 
+         createModel, 
+         deleteModelRecord,
+         getAllCarModelsByMakeId,
+         getModel, 
+         updateModel 
+   } from "../services/model.service.js";
 
 // Get All Models of a Make Car
-export async function getAllCarModelsByIdHandler(req, res) {
+async function getAllCarModelsByIdHandler(req, res) {
    try {
      const models = await getAllCarModelsByMakeId({"makeId": new mongoose.Types.ObjectId(req.params.makeId)})
      return res.json(models)
@@ -13,7 +18,7 @@ export async function getAllCarModelsByIdHandler(req, res) {
   }
 
 // Get a Model of a Make Car
-export async function getCarModelHandlerByIdHandler(req, res) {
+async function getCarModelHandlerByIdHandler(req, res) {
    try {
       const model = await getModel(req.params.id);
       return res.json(model)
@@ -23,7 +28,7 @@ export async function getCarModelHandlerByIdHandler(req, res) {
   }
 
 // Add a Model of a Make Car
-export async function insertCarModelHandler(req, res) {
+async function insertCarModelHandler(req, res) {
    const {name, description, makeId} = req.body;
    
    try {
@@ -35,7 +40,7 @@ export async function insertCarModelHandler(req, res) {
 }
 
 // Update a Model of a Make Car
-export async function updateCarModelHandler(req, res) {
+async function updateCarModelHandler(req, res) {
    const filter = { _id: req.params.modelId };
    const {name, description} = req.body;
    // Create a document that sets the data for model
@@ -55,11 +60,19 @@ export async function updateCarModelHandler(req, res) {
 }
 
 // Remove a Model of a Make Car
-export async function deleteCarModelHandler(req, res) {
+async function deleteCarModelHandler(req, res) {
    try {
        const removedModel = await deleteModelRecord({_id: req.params.modelId});
        return res.json(removedModel)
     } catch (error) {
         return res.json({message: error})
     }
+}
+
+export {
+   getAllCarModelsByIdHandler,
+   getCarModelHandlerByIdHandler,
+   insertCarModelHandler,
+   updateCarModelHandler,
+   deleteCarModelHandler,
 }
