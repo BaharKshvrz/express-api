@@ -1,4 +1,4 @@
-import User from "../models/User.js";
+import User from "../models/user.schema.js";
 import validator from "../utils/validate.js";
 
 // Check the duplication in User data

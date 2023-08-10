@@ -1,46 +1,41 @@
-import Make from "../models/Make.js";
+import { getAllMakes, createMake, getMake, updateMake, deleteMake} from "../services/make.service.js";
 
 // Get All Makes of Car
-export async function getAllCarMakes(req, res) {
+export async function getMakesHandler(req, res) {
    try {
-      const makes = await Make.find();
-      res.json(makes)
+      const makes = await getAllMakes();
+      return res.json(makes)
    } catch (error) {
       return res.json({message: error})
    }
   }
 
 // Get a Make of Car
-export async function getACarMake(req, res) {
+export async function getMakeHandler(req, res) {
    try {
-      const make = await Make.findById(req.params.makeId);
-      res.json(make)
+      const make = await getMake(req.params.makeId);
+      return res.json(make)
    } catch (error) {
       return res.json({message: error})
    }
   }
 
 // Add a Make of Car
-export async function insertCarMake(req, res) {
-   const {name, description} = req.body;
-   const newMake = new Make({
-        name,
-        description,
-   })
+export async function insertCarMakeHandler(req, res) {
+  const {name, description} = req.body;
 
   try {
-     const saveMake= await newMake.save();
-     res.status(201).json(saveMake)
+     const saveMake= await createMake({name, description});
+     return res.status(201).json(saveMake)
   } catch (error) {
-      res.json({message: error})
+      return res.json({message: error})
   }
 }
 
 // Update a Make of Car
-export async function updateCarMake(req, res) {
+export async function updateCarMakeHandler(req, res) {
    const filter = { _id: req.params.makeId };
    const {name, description} = req.body;
-
    // create a document that sets the data for make
    const updateDoc = {
        $set: {
@@ -50,7 +45,7 @@ export async function updateCarMake(req, res) {
      };
 
    try {
-       const updatedMake = await Make.updateOne(filter, updateDoc);
+       const updatedMake = await updateMake(filter, updateDoc);
        res.json(updatedMake)
     } catch (error) {
         res.json({message: error})
@@ -58,9 +53,9 @@ export async function updateCarMake(req, res) {
 }
 
 // Remove a Make of Car
-export async function deleteCarMake(req, res) {
+export async function deleteCarMakeHandler(req, res) {
    try {
-       const removedMake = await Make.deleteOne({_id: req.params.makeId});
+       const removedMake = await deleteMake({_id: req.params.makeId});
        res.json(removedMake)
     } catch (error) {
         res.json({message: error})

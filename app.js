@@ -31,19 +31,13 @@ app.use(
 );
 
 
-
-
-
 // Import Routes
 // app.use("/posts", postsRoute)
 // app.use("/users", usersRoute)
-
 
 app.listen(PORT, async () => {
     logger.info(`App is running at http://localhost:${PORT}`);
     await connect("cars");
     routes(app);
-  
-   startMetricsServer();
-     // swaggerDocs(app, port);
+    startMetricsServer();
   });

@@ -1,50 +1,44 @@
-import Make from "../models/Make.js";
-import Model from "../models/Model.js";
-import mongoose from "mongoose"
+import Make from "../models/make.schema.js";
+import mongoose, { deleteModel } from "mongoose"
+import { createModel, deleteModelRecord, getAllCarModelsByMakeId, getModel, updateModel } from "../services/model.service.js";
 
 // Get All Models of a Make Car
-export async function getAllCarModelsByMakeId(req, res) {
+export async function getAllCarModelsByIdHandler(req, res) {
    try {
-     const models = await Model.find({"makeId": new mongoose.Types.ObjectId(req.params.makeId)})
-     res.json(models)
+     const models = await getAllCarModelsByMakeId({"makeId": new mongoose.Types.ObjectId(req.params.makeId)})
+     return res.json(models)
    } catch (error) {
       return res.json({message: error})
    }
   }
 
 // Get a Model of a Make Car
-export async function getACarModel(req, res) {
+export async function getCarModelHandlerByIdHandler(req, res) {
    try {
-      const model = await Model.findById(req.params.modelId);
-      res.json(model)
+      const model = await getModel(req.params.id);
+      return res.json(model)
    } catch (error) {
       return res.json({message: error})
    }
   }
 
 // Add a Model of a Make Car
-export async function insertCarMakeModel(req, res) {
+export async function insertCarModelHandler(req, res) {
    const {name, description, makeId} = req.body;
-   const newModel = new Model({
-       name,
-       description,
-       makeId,
-   });
-
-  try {
-     const saveMake= await newModel.save();
-     res.status(201).json(saveMake)
-  } catch (error) {
-      res.json({message: error})
-  }
+   
+   try {
+        const saveMake= await createModel({name, description, makeId});
+        return res.status(201).json(saveMake)
+    } catch (error) {
+        res.json({message: error})
+    }
 }
 
 // Update a Model of a Make Car
-export async function updateCarMake(req, res) {
+export async function updateCarModelHandler(req, res) {
    const filter = { _id: req.params.modelId };
    const {name, description} = req.body;
-
-   // create a document that sets the data for make
+   // Create a document that sets the data for model
    const updateDoc = {
        $set: {
            name,
@@ -53,19 +47,19 @@ export async function updateCarMake(req, res) {
      };
 
    try {
-       const updatedModel = await Model.updateOne(filter, updateDoc);
-       res.json(updatedModel)
+       const updatedModel = await updateModel(filter, updateDoc);
+       return res.json(updatedModel)
     } catch (error) {
-        res.json({message: error})
+       return res.json({message: error})
     }
 }
 
 // Remove a Model of a Make Car
-export async function deleteCarMakeModel(req, res) {
+export async function deleteCarModelHandler(req, res) {
    try {
-       const removedModel = await Make.deleteOne({_id: req.params.modelId});
-       res.json(removedModel)
+       const removedModel = await deleteModelRecord({_id: req.params.modelId});
+       return res.json(removedModel)
     } catch (error) {
-        res.json({message: error})
+        return res.json({message: error})
     }
 }

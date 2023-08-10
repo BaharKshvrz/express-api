@@ -1,24 +1,17 @@
 import jwt from "jsonwebtoken";
-import User from "../models/User.js";
 import { databaseResponseTimeHistogram } from "../utils/metrics.js";
+import { createUser } from "../services/user.service.js";
 
 // Add a User
 export async function userSignupHandler(req, res) {
    const { firstName, lastName, email, username, password } = req.body;
-   const newUser = new User({
-        firstName,
-        lastName,
-        email,
-        username,
-        password,
-   });
 
-    try {
-        const metricsLabels = {
-            operation: "signupUser",
-          };
-        const timer = databaseResponseTimeHistogram.startTimer();
-        await newUser.save();
+   const timer = databaseResponseTimeHistogram.startTimer();
+   const metricsLabels = {
+    operation: "signupUser",
+  };
+   try {
+        const newUser = await createUser({ firstName, lastName, email, username, password });
         timer({ ...metricsLabels, success: "true" });
         return res.status(201).json({
             success: true,

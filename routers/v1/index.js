@@ -1,36 +1,50 @@
 import {
-     getACarMake,
-     getAllCarMakes,
-     insertCarMake, 
-     updateCarMake,
-     deleteCarMake
+     getMakesHandler,
+     getMakeHandler,
+     insertCarMakeHandler,
+     deleteCarMakeHandler,
+     updateCarMakeHandler
    } from "../../controllers/make.controller.js";
 
 import { 
-   getAllCarModelsByMakeId,
-   insertCarMakeModel 
-}from "../../controllers/model.controller.js";
+      deleteCarModelHandler,
+      getAllCarModelsByIdHandler,
+      getCarModelHandlerByIdHandler,
+      insertCarModelHandler,
+      updateCarModelHandler 
+   } from "../../controllers/model.controller.js";
 
-import { userLoginHandler, userSignupHandler } from "../../controllers/user.controller.js";
+import { 
+    userLoginHandler,
+    userSignupHandler 
+   } from "../../controllers/user.controller.js";
+
 import signUpValidation from "../../middleware/signUpValidation.js";
 
 function routes(app) {
+   // Users
    app.post("/users/signup",
-            [signUpValidation.checkDuplicateUsernameOrEmail, signUpValidation.signup],
+            [
+               signUpValidation.checkDuplicateUsernameOrEmail, 
+               signUpValidation.signup
+            ],
             userSignupHandler
            );
    app.post("/users/login", userLoginHandler);
 
-   app.get("/makes", getAllCarMakes);
-   app.get("/makes/:makeId", getACarMake);
-   app.post("/makes", insertCarMake);
-   app.put("/makes/:makeId", updateCarMake);
-   app.delete("/makes/:makeId", deleteCarMake);
+   // Makes
+   app.get("/makes", getMakesHandler);
+   app.get("/makes/:makeId", getMakeHandler);
+   app.post("/makes", insertCarMakeHandler);
+   app.put("/makes/:makeId", updateCarMakeHandler);
+   app.delete("/makes/:makeId", deleteCarMakeHandler);
 
-   app.get("/models/:makeId", getAllCarModelsByMakeId);
-   app.post("/models", insertCarMakeModel);
-  
-
+   // Models
+   app.get("/models/:makeId", getAllCarModelsByIdHandler);
+   app.get("/models/:id", getCarModelHandlerByIdHandler);
+   app.post("/models", insertCarModelHandler);
+   app.put("/models/:modelId", updateCarModelHandler);
+   app.delete("/models/:modelId", deleteCarModelHandler);
 }
 
 export default routes;
