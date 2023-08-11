@@ -1,3 +1,8 @@
+import { 
+     getCarsHandler,
+     insertCarHandler 
+   } from "../../controllers/car.controller.js";
+
 import {
      getMakesHandler,
      getMakeHandler,
@@ -18,7 +23,8 @@ import {
     userLoginHandler,
     userSignupHandler 
    } from "../../controllers/user.controller.js";
-
+   
+import paginationMiddleware from "../../middleware/pagination.js";
 import signUpValidation from "../../middleware/signUpValidation.js";
 
 function routes(app) {
@@ -45,6 +51,10 @@ function routes(app) {
    app.post("/models", insertCarModelHandler);
    app.put("/models/:modelId", updateCarModelHandler);
    app.delete("/models/:modelId", deleteCarModelHandler);
+  
+   // Cars
+    app.get("/cars", paginationMiddleware(5), getCarsHandler);
+    app.post("/cars", insertCarHandler);
 }
 
 export default routes;

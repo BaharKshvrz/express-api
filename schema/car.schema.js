@@ -1,10 +1,7 @@
 import mongoose from "mongoose"
+import ReviewSchema from "./review.schema.js";
 
 const CarSchema = mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    },
     make: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
@@ -19,6 +16,10 @@ const CarSchema = mongoose.Schema({
         type: String,
         require: true,
     },
+    year: Number,
+    color: String,
+    price: Number,
+    reviews: [ReviewSchema]  // Array of review sub-documents
 });
 
 
