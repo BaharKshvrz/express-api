@@ -1,6 +1,7 @@
 import { 
      getCarsHandler,
-     insertCarHandler 
+     insertCarHandler, 
+     insertCarReviewHandler
    } from "../../controllers/car.controller.js";
 
 import {
@@ -23,6 +24,7 @@ import {
     userLoginHandler,
     userSignupHandler 
    } from "../../controllers/user.controller.js";
+import authenticationToken from "../../middleware/auth.js";
    
 import paginationMiddleware from "../../middleware/pagination.js";
 import signUpValidation from "../../middleware/signUpValidation.js";
@@ -55,6 +57,7 @@ function routes(app) {
    // Cars
     app.get("/cars", paginationMiddleware(5), getCarsHandler);
     app.post("/cars", insertCarHandler);
+    app.post("/cars/:carId/review", authenticationToken, insertCarReviewHandler);
 }
 
 export default routes;

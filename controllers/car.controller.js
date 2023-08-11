@@ -1,11 +1,12 @@
 import { createCar, getAllCars } from "../services/car.service.js";
+import { createCarReview } from "../services/review.services.js";
+import { transformCarReview } from "../transformation/carReviewTransformation.js";
 import { transformCar, transformCars } from "../transformation/carTransformation.js";
 import { organizeAPIResult } from "../utils/helper.js";
 
 // Get All Cars
 export async function getCarsHandler(req, res) {
    const { currentPage, skip, perPage, sortField } = req.pagination;
-   
    try {
       const { result, totalCount } = await getAllCars(skip, perPage, sortField);
       return res.json(organizeAPIResult(transformCars(result),
@@ -32,3 +33,16 @@ export async function insertCarHandler(req, res) {
        return res.json({message: error})
    }
  }
+
+// Add a Review to a Car
+export async function insertCarReviewHandler(req, res) {
+  const carId = req.params.carId;
+  const { userId, rating, comment } = req.body;
+  try {
+      const savedCarComment = await createCarReview({ carId, userId, rating, comment });
+      return res.status(201).json(organizeAPIResult(transformCarReview(savedCarComment), "Car review created successfully."))
+   } catch (error) {
+       return res.json({message: error})
+   }
+ }
+ 

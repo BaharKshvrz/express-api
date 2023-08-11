@@ -6,6 +6,7 @@ async function getAllCars(skip, perPage, sortField) {
       const result = await Car.find()
                               .populate({ path: 'make', select: 'name' })
                               .populate({ path: 'model', select: 'name' })
+                              .populate("reviews")
                               .skip(skip)
                               .limit(perPage)
                               .sort({ [sortField]: 1 });
