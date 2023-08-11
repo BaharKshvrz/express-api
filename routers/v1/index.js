@@ -1,7 +1,9 @@
 import { 
      getCarsHandler,
      insertCarHandler, 
-     insertCarReviewHandler
+     insertCarImageHandler, 
+     insertCarReviewHandler,
+     uploadCarImageHandler
    } from "../../controllers/car.controller.js";
 
 import {
@@ -25,9 +27,12 @@ import {
     userSignupHandler 
    } from "../../controllers/user.controller.js";
 import authenticationToken from "../../middleware/auth.js";
-   
 import paginationMiddleware from "../../middleware/pagination.js";
 import signUpValidation from "../../middleware/signUpValidation.js";
+import fileUpload from "express-fileupload";
+import fileExtLimiter from "../../middleware/fileExtLimiter.js";
+import fileSizeLimiter from "../../middleware/fileSizeLimiter.js";
+import filesPayloadExists from "../../middleware/filesPayloadExists.js";
 
 function routes(app) {
    // Users
@@ -58,6 +63,17 @@ function routes(app) {
     app.get("/cars", paginationMiddleware(5), getCarsHandler);
     app.post("/cars", insertCarHandler);
     app.post("/cars/:carId/review", authenticationToken, insertCarReviewHandler);
+    app.get("/cars/form", uploadCarImageHandler);
+    app.get("/cars/form", uploadCarImageHandler);
+    app.post('/cars/upload', 
+             [
+                fileUpload({ createParentPath: true }),
+                filesPayloadExists,
+                fileExtLimiter(['.png', '.jpg', '.jpeg']),
+                fileSizeLimiter
+             ],
+             insertCarImageHandler
+   )
 }
 
 export default routes;

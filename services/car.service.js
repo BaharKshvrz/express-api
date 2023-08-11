@@ -18,6 +18,15 @@ async function getAllCars(skip, perPage, sortField) {
     }
  }
 
+ async function getAllCarsForUplaod() {
+  try {
+    const result = await Car.find();                         
+    return result;
+  } catch (error) {
+      throw e;
+  }
+}
+
 // Insert a Car
 async function createCar(input) {
   try {
@@ -31,5 +40,6 @@ async function createCar(input) {
  export {
     getAllCars,
     createCar,
+    getAllCarsForUplaod,
  }
  

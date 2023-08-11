@@ -3,6 +3,7 @@ import { transformCarReview } from "./carReviewTransformation.js";
 const transformCar = (data) => {
  const baseCar = {
       id: data._id,
+      name: data.name,
       makeId: data.makeId,
       make: data.make.name,
       modelId: data.modelId,
@@ -14,16 +15,12 @@ const transformCar = (data) => {
  };
 
  let reviewArr = []
-
- data.reviews.forEach(review => {
-  reviewArr.push(transformCarReview(review))
+  data.reviews.forEach(review => {
+     reviewArr.push(transformCarReview(review))
   });
+  
   baseCar.reviews = reviewArr;
-
   return baseCar;
-
-
-
 }
 
 const transformCars = (list) => {

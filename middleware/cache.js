@@ -24,8 +24,7 @@
     export const  saveToCache = async (key, data) => {
       const client = redis.createClient(); 
       await client.connect();
-      console.log(client.isOpen); // this is false
-     client.setEx(key, 3600, JSON.stringify(data)); // Cache for 1 hour (3600 seconds)
+      client.setEx(key, 3600, JSON.stringify(data)); // Cache for 1 hour (3600 seconds)
     };
 
 

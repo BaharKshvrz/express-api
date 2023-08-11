@@ -1,8 +1,10 @@
-import { createCar, getAllCars } from "../services/car.service.js";
-import { createCarReview } from "../services/review.services.js";
+import { createCar, getAllCars, getAllCarsForUplaod } from "../services/car.service.js";
+import { createCarReview, uploadCarImages } from "../services/carInfo.services.js";
 import { transformCarReview } from "../transformation/carReviewTransformation.js";
 import { transformCar, transformCars } from "../transformation/carTransformation.js";
 import { organizeAPIResult } from "../utils/helper.js";
+import path from "path";
+import { fileURLToPath } from 'url'
 
 // Get All Cars
 export async function getCarsHandler(req, res) {
@@ -42,7 +44,43 @@ export async function insertCarReviewHandler(req, res) {
       const savedCarComment = await createCarReview({ carId, userId, rating, comment });
       return res.status(201).json(organizeAPIResult(transformCarReview(savedCarComment), "Car review created successfully."))
    } catch (error) {
-       return res.json({message: error})
+       return res.json({message: error.message || error})
    }
  }
+
+// Upload Photo for a car
+export async function uploadCarImageHandler(req, res) {
+   const cars = await getAllCarsForUplaod();
+   let carsArr = [];
+   for(let car of cars) {
+       carsArr.push([car._id, car.name])
+   }
+   res.render('index', {data: carsArr});
+  }
  
+ // Add a Photo to a car
+export async function insertCarImageHandler(req, res) {
+   const __filename = fileURLToPath(import.meta.url)
+   const __dirname = path.dirname(__filename)
+   const files = req.files
+
+   Object.keys(files).forEach(key => {
+       const filepath = path.join(__dirname, 'public/images/cars', files[key].name)
+       files[key].mv(filepath, (err) => {
+           if (err) return res.status(500).json({ status: "error", message: err })
+       })
+   })
+
+   // Add to car images
+   const { carId }  = req.body;
+   try {
+      const savedCarImages = await uploadCarImages({ carId, files });
+      return res.status(201).json(organizeAPIResult(transformCarReview(savedCarImages), "Car imgages uploaded successfully."))
+   } catch (error) {
+       return res.json({message: error.message || error})
+   }
+
+
+   // return res.json({ status: 'success', message: Object.keys(files).toString() })
+  }
+  
