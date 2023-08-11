@@ -7,7 +7,6 @@ Use can signup and login to the API.
    - MongoDB with Mongoose
    - Express.js & Express.js middleware
    - Using pino for logging
-   - 
 
 
 ## Getting Started
